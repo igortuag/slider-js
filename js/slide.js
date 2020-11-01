@@ -7,13 +7,13 @@ export default class Slide {
   }
 
   moveSlide(distX) {
-    this.dist.movement = distX;
-    this.slide.style.transform = `translate3d(${-distX}px, 0, 0)`;
+    this.dist.movePosition = distX;
+    this.slide.style.transform = `translate3d(${distX}px, 0, 0)`;
   }
 
   updatedPosition(clienteX) {
-    this.dist.movement = (this.dist.startX - clienteX) * 1.6;
-    return this.dist.finalPosition + this.dist.movement;
+    this.dist.movement = (this.dist.startX - clientX) * 1.6;
+    return this.dist.finalPosition - this.dist.movement;
   }
 
   onStart(event) {
@@ -40,7 +40,7 @@ export default class Slide {
   onEnd(event) {
     const moveType = event.type === 'mouseup' ? 'mousemove' : 'touchmove';
     this.wrapper.removeEventListener(moveType, this.onMove);
-    this.dist.finalPosition = this.dist.movement;
+    this.dist.finalPosition = this.dist.movePosition;
   }
 
   addSlideEvents() {
@@ -59,8 +59,9 @@ export default class Slide {
   // Slides config
 
   slidePosition(slide) {
-    return (
-      slide.offsetLeft - (this.wrapper.offsetWidth - slide.offsetWidth) / 2
+    return -(
+      slide.offsetLeft -
+      (this.wrapper.offsetWidth - slide.offsetWidth) / 2
     );
   }
 
@@ -84,12 +85,8 @@ export default class Slide {
   slidesConfig() {
     this.slideArray = [...this.slide.children].map((el) => {
       const position = this.slidePosition(el);
-      return {
-        position,
-        el,
-      };
+      return { position, el };
     });
-    console.log(this.slideArray);
   }
 
   init() {
