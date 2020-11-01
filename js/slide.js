@@ -17,7 +17,7 @@ export default class Slide {
   }
 
   onStart(event) {
-    const movetype = event.type === 'mouseup' ? 'mousemove' : 'touchmove';
+    const moveType = event.type === 'mousedown' ? 'mousemove' : 'touchmove';
     if (event.type === 'mousedown') {
       event.preventDefault();
       this.dist.startX = event.clientX;
@@ -25,7 +25,7 @@ export default class Slide {
       this.dist.startX = event.changedTouches[0].clientX;
     }
 
-    this.wrapper.addEventListener(movetype, this.onMove);
+    this.wrapper.addEventListener(moveType, this.onMove);
   }
 
   onMove(event) {
@@ -38,8 +38,8 @@ export default class Slide {
   }
 
   onEnd(event) {
-    const movetype = event.type === 'mouseup' ? 'mousemove' : 'touchmove';
-    this.wrapper.removeEventListener(movetype, this.onMove);
+    const moveType = event.type === 'mouseup' ? 'mousemove' : 'touchmove';
+    this.wrapper.removeEventListener(moveType, this.onMove);
     this.dist.finalPosition = this.dist.movement;
   }
 
