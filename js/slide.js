@@ -56,9 +56,46 @@ export default class Slide {
     this.onEnd = this.onEnd.bind(this);
   }
 
+  // Slides config
+
+  slidePosition(slide) {
+    return (
+      slide.offsetLeft - (this.wrapper.offsetWidth - slide.offsetWidth) / 2
+    );
+  }
+
+  slidesIndexNav(index) {
+    const last = this.slideArray.length - 1;
+
+    this.index = {
+      prev: index ? index - 1 : undefined,
+      active: index,
+      next: index < last ? index + 1 : undefined,
+    };
+  }
+
+  changeSlide(index) {
+    const activeSlide = this.slideArray[index];
+    this.moveSlide(activeSlide.position);
+    this.slidesIndexNav(index);
+    this.dist.finalPosition = activeSlide.position;
+  }
+
+  slidesConfig() {
+    this.slideArray = [...this.slide.children].map((el) => {
+      const position = this.slidePosition(el);
+      return {
+        position,
+        el,
+      };
+    });
+    console.log(this.slideArray);
+  }
+
   init() {
     this.bindEvents();
     this.addSlideEvents();
+    this.slidesConfig();
     return this;
   }
 }
